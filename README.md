@@ -96,12 +96,17 @@ La API está disponible en `/api` y incluye las siguientes rutas:
 - **Bookings** (`/api/booking`) - Sistema de reservas
 - **Occurrences** (`/api/occurrences`) - Gestión de eventos
 
-### Documentación Swagger
+### Documentación 
+
+## Swagger
 
 La documentación completa de la API está disponible en:
 ```
 http://localhost:80/api/swagger-docs
 ```
+## deepwiki
+
+https://deepwiki.com/Erich2020/challenge-server
 
 ## 🔐 Variables de Entorno
 
