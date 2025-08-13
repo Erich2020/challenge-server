@@ -1,0 +1,35 @@
+version: '3.2'
+services:
+  mongo:
+    image: mongo:5
+    container_name: challenge_mongo
+    hostname: challenge_mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: API_CHALLENGE
+    networks:
+      - db_challenge
+  challenge:
+    image: challenge-server:latest
+    container_name: challenge
+    hostname: challenge_server
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      - MONGO_URI=mongodb://challenge_mongo:27017/API_CHALLENGE
+      - JWT_SECRET=kzktG8IIkfdHjqPjsQGD2w3
+      - BCRYPT_SALT_ROUNDS=5
+      - APIKEY='123456'
+    networks:
+      - db_challenge
+      - front_challenge
+networks:
+  front_challenge:
+    external:
+      name: front_front_challenge
+  db_challenge:
+    external:
+      name: db_db_challenge
