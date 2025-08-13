@@ -15,7 +15,8 @@ const bookingController = new BookingController();
  * @swagger
  * /api/booking:
  *   post:
- *     summary: Create a new booking
+ *     summary: Crear una nueva reserva
+ *     description: Permite al usuario autenticado crear una reserva para un evento específico
  *     tags: [Booking]
  *     requestBody:
  *       required: true
@@ -23,12 +24,40 @@ const bookingController = new BookingController();
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - occurrence
  *             properties:
  *               occurrence:
  *                 type: string
+ *                 description: ID del evento para el cual se crea la reserva
+ *                 example: "507f1f77bcf86cd799439011"
  *     responses:
- *       200:
- *         description: Create a new booking
+ *       201:
+ *         description: Reserva creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: ID único de la reserva
+ *                 user:
+ *                   type: string
+ *                   description: ID del usuario que creó la reserva
+ *                 occurrence:
+ *                   type: string
+ *                   description: ID del evento reservado
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Fecha de creación de la reserva
+ *       400:
+ *         description: Datos de entrada inválidos
+ *       401:
+ *         description: Token JWT inválido o faltante
+ *       500:
+ *         description: Error interno del servidor
  */
 routes.post(
   '/booking',
@@ -42,11 +71,36 @@ routes.post(
  * @swagger
  * /api/bookings:
  *   get:
- *     summary: Get all booking
+ *     summary: Obtener todas las reservas
+ *     description: Lista todas las reservas del usuario autenticado
  *     tags: [Booking]
  *     responses:
  *       200:
- *         description: List of booking
+ *         description: Lista de reservas obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID único de la reserva
+ *                   user:
+ *                     type: string
+ *                     description: ID del usuario que creó la reserva
+ *                   occurrence:
+ *                     type: string
+ *                     description: ID del evento reservado
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Fecha de creación de la reserva
+ *       401:
+ *         description: Token JWT inválido o faltante
+ *       500:
+ *         description: Error interno del servidor
  */
 routes.get('/bookings', isAuth, validateRequest, bookingController.list);
 
@@ -54,7 +108,8 @@ routes.get('/bookings', isAuth, validateRequest, bookingController.list);
  * @swagger
  * /api/booking/{id}:
  *   get:
- *     summary: Get a booking
+ *     summary: Obtener una reserva específica
+ *     description: Obtiene los detalles de una reserva específica por su ID
  *     tags: [Booking]
  *     parameters:
  *       - in: path
@@ -62,10 +117,37 @@ routes.get('/bookings', isAuth, validateRequest, bookingController.list);
  *         required: true
  *         schema:
  *           type: string
- *         description: booking id
+ *         description: ID de la reserva
+ *         example: "507f1f77bcf86cd799439011"
  *     responses:
  *       200:
- *         description: Get a booking
+ *         description: Reserva obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: ID único de la reserva
+ *                 user:
+ *                   type: string
+ *                   description: ID del usuario que creó la reserva
+ *                 occurrence:
+ *                   type: string
+ *                   description: ID del evento reservado
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Fecha de creación de la reserva
+ *       400:
+ *         description: ID de reserva inválido
+ *       401:
+ *         description: Token JWT inválido o faltante
+ *       404:
+ *         description: Reserva no encontrada
+ *       500:
+ *         description: Error interno del servidor
  */
 routes.get('/booking/:id', isAuth, bookingController.get);
 
@@ -73,7 +155,8 @@ routes.get('/booking/:id', isAuth, bookingController.get);
  * @swagger
  * /api/booking/cancel:
  *   delete:
- *     summary: Update a booking
+ *     summary: Cancelar una reserva
+ *     description: Permite al usuario autenticado cancelar una reserva existente
  *     tags: [Booking]
  *     requestBody:
  *       required: true
@@ -81,12 +164,42 @@ routes.get('/booking/:id', isAuth, bookingController.get);
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - occurrence
  *             properties:
  *               occurrence:
  *                 type: string
+ *                 description: ID del evento de la reserva a cancelar
+ *                 example: "507f1f77bcf86cd799439011"
  *     responses:
  *       200:
- *         description: Update a booking
+ *         description: Reserva cancelada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: ID único de la reserva
+ *                 user:
+ *                   type: string
+ *                   description: ID del usuario que canceló la reserva
+ *                 occurrence:
+ *                   type: string
+ *                   description: ID del evento de la reserva cancelada
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Fecha de cancelación de la reserva
+ *       400:
+ *         description: Datos de entrada inválidos
+ *       401:
+ *         description: Token JWT inválido o faltante
+ *       404:
+ *         description: Reserva no encontrada o no se pudo cancelar
+ *       500:
+ *         description: Error interno del servidor
  */
 routes.delete(
   '/booking/cancel',
