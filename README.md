@@ -104,6 +104,13 @@ La documentación completa de la API está disponible en:
 ```
 http://localhost:80/api/swagger-docs
 ```
+
+Ambiente puesta en producción
+
+```
+https://api-prueba.virreyesabogados.com/api/swagger-docs/
+```
+
 ## deepwiki
 
 https://deepwiki.com/Erich2020/challenge-server
