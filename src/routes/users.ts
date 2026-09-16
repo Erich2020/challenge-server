@@ -92,7 +92,7 @@ routes.post(
  * /api/login:
  *   post:
  *     summary: Inicio de sesión de usuario
- *     description: Autentica a un usuario existente y devuelve un token JWT
+ *     description: Autentica a un usuario existente y devuelve un token JWT. Una vez iniciada la sesión le devolvera un JWT, el cual se gestiona por Bearer, en el caso de la presente documentación se recomienda registrar solo el JWT, el Bearer ya se incluye al realizar la autenticación.
  *     tags: [Auth]
  *     security: []
  *     requestBody:
