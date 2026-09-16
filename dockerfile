@@ -8,7 +8,6 @@ COPY tsconfig.json ./
 RUN npm install --only=development
 
 COPY ./src ./src
-RUN rm .env || true
 
 RUN npm run build
 
